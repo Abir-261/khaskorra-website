@@ -1,0 +1,63 @@
+// Khaskorra Foundation - Prisma schema
+// https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// সেচ্ছাসেবী নিবন্ধন
+model Volunteer {
+  id        String   @id @default(cuid())
+  name      String
+  phone     String
+  email     String?
+  address   String?
+  message   String?
+  createdAt DateTime @default(now())
+}
+
+// যোগাযোগ বার্তা
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  phone     String?
+  email     String?
+  message   String
+  createdAt DateTime @default(now())
+}
+
+// দান / অনুদান রেকর্ড — কে, কোন খাতে, কত দিল
+model Donation {
+  id        String   @id @default(cuid())
+  name      String // দানকারীর নাম
+  phone     String? // যোগাযোগ নম্বর (প্রাইভেট রাখা হয়)
+  amount    Int // টাকার পরিমাণ
+  category  String // কোন খাতে দান
+  message   String? // দানকারীর বার্তা
+  isPublic  Boolean  @default(true) // নাম প্রকাশ করা হবে কিনা
+  createdAt DateTime @default(now())
+}
+
+// খরচের হিসাব — কোন খাতে কত খরচ হলো
+model Expense {
+  id        String   @id @default(cuid())
+  title     String // খরচের বিবরণ
+  category  String // খরচের খাত
+  amount    Int // টাকার পরিমাণ
+  note      String? // অতিরিক্ত নোট
+  spentAt   DateTime @default(now()) // খরচের তারিখ
+  createdAt DateTime @default(now())
+}
+
+// ব্রেকিং নিউজ টিকারের ঘোষণা
+model Announcement {
+  id        String   @id @default(cuid())
+  text      String // ঘোষণার লেখা
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
